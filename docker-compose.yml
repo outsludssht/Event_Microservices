@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # 1. Брокер сообщений (RabbitMQ)
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -9,7 +8,6 @@ services:
       - "5672:5672" 
       - "15672:15672"
 
-  # 2. Базы данных
   order_db:
     image: postgres:15
     environment:
@@ -29,12 +27,12 @@ services:
       - "5432:5432"
 
   order-service:
-    build: ./order_service  # Путь к папке, где лежит наш Dockerfile
+    build: ./order_service
     ports:
-      - "8000:8000"         # Открываем порт 8000 для браузера
+      - "8000:8000"
     depends_on:
-      - rabbitmq            # Ждем, пока запустится кролик
-      - order_db            # Ждем, пока запустится база данных для заказов
+      - rabbitmq
+      - order_db
 
   payment-service:
     build: ./payment_service
